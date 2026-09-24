@@ -1,0 +1,30 @@
+image:
+  tag: ""
+
+serviceAccount:
+  name: inventory-service-sa
+
+vault:
+  role: "pizzashop-prom"
+  secretPath: "kv/pizzashop/prom/inventory"
+
+# Миграции для prom
+migrations:
+  enabled: true
+  type: "up"
+  image:
+    tag: ""
+  vault:
+    role: "pizzashop-prom"
+    secretPath: "kv/pizzashop/prom/migrations"
+  databaseName: "inventory_prom_db"
+  dbHost: "nginx-egress.egress-gateway.svc.cluster.local"
+  dbPort: "9001"
+
+configMap:
+  LOG_LEVEL: "info"
+  DB_HOST: "nginx-egress.egress-gateway.svc.cluster.local"
+  DB_PORT: "9001"
+  DB_NAME: "inventory_prom_db"
+  RABBITMQ_HOST: "rabbitmq.pizzashop-prom.svc.cluster.local"
+  RABBITMQ_PORT: "5672"

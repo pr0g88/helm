@@ -1,0 +1,30 @@
+image:
+  tag: ""
+
+serviceAccount:
+  name: catalog-service-sa
+
+vault:
+  role: "pizzashop-dev"
+  secretPath: "kv/pizzashop/dev/catalog"
+
+# Миграции для dev
+migrations:
+  enabled: true
+  type: "up"
+  image:
+    tag: ""
+  vault:
+    role: "pizzashop-dev"
+    secretPath: "kv/pizzashop/dev/migrations"
+  databaseName: "catalog_db"
+  dbHost: "nginx-egress.egress-gateway.svc.cluster.local"
+  dbPort: "9001"
+
+configMap:
+  LOG_LEVEL: "info"
+  DB_HOST: "nginx-egress.egress-gateway.svc.cluster.local"
+  DB_PORT: "9001"
+  DB_NAME: "catalog_db"
+  INVENTORY_SERVICE_URL: "http://inventory-service:8085"
+  ORDER_SERVICE_URL: "http://order-service:8083"

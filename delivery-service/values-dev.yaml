@@ -1,0 +1,32 @@
+image:
+  tag: ""  # ← Пустой, переопределяется через helmfile
+
+serviceAccount:
+  name: delivery-service-sa
+
+vault:
+  role: "pizzashop-dev"
+  secretPath: "kv/pizzashop/dev/delivery"
+
+# Миграции для dev окружения
+migrations:
+  enabled: true
+  type: "up"
+  image:
+    tag: ""
+  vault:
+    role: "pizzashop-dev"
+    secretPath: "kv/pizzashop/dev/migrations"
+  databaseName: "delivery_db"
+  dbHost: "nginx-egress.egress-gateway.svc.cluster.local"
+  dbPort: "9001"
+
+configMap:
+  DB_HOST: "nginx-egress.egress-gateway.svc.cluster.local"
+  DB_PORT: "9001"
+  RABBITMQ_HOST: "rabbitmq.pizzashop-dev.svc.cluster.local"
+  RABBITMQ_PORT: "5672"
+  SERVER_HOST: "0.0.0.0"
+  SERVER_PORT: "8087"
+  ORDER_SERVICE_URL: "http://order-service:8083"
+  LOG_LEVEL: "debug"

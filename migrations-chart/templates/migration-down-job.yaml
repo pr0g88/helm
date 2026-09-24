@@ -1,0 +1,5 @@
+# Запускается как pre-rollback хук; реально выполняет откат только
+# при MIGRATION_DOWN_ENABLED=true (см. _migration-job.tpl).
+{{- if .Values.enabled }}
+{{- include "migrations-chart.migration-job" (dict "type" "down" "root" .) }}
+{{- end }}

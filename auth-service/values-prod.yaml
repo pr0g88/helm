@@ -1,0 +1,36 @@
+image:
+  tag: ""
+
+replicaCount: 2
+
+serviceAccount:
+  name: auth-service-sa
+
+vault:
+  role: "pizzashop-prom"
+  secretPath: "kv/pizzashop/prom"
+
+migrations:
+  enabled: true
+  type: "up"
+  image:
+    tag: ""
+  vault:
+    role: "pizzashop-prom"
+    secretPath: "kv/pizzashop/prom/migrations"
+  databaseName: "auth_prom_db"
+  dbHost: "nginx-egress.egress-gateway.svc.cluster.local"
+  dbPort: "9001"
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "200m"
+  limits:
+    memory: "256Mi"
+    cpu: "400m"
+
+configMap:
+  SERVER_HOST: "0.0.0.0"
+  SERVER_PORT: "8080"
+  RUST_LOG: "warn"

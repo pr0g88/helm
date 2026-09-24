@@ -1,0 +1,13 @@
+User Service has been deployed!
+
+1. Get the application URL:
+   kubectl get service {{ include "common.fullname" . }} -n {{ .Release.Namespace }}
+
+2. Check pods status:
+   kubectl get pods -n {{ .Release.Namespace }} -l app={{ include "common.name" . }}
+
+3. Check HPA status:
+   kubectl get hpa -n {{ .Release.Namespace }}
+
+4. View logs:
+   kubectl logs -f deployment/{{ include "common.fullname" . }} -n {{ .Release.Namespace }}

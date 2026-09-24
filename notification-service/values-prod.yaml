@@ -1,0 +1,35 @@
+image:
+  tag: ""
+
+serviceAccount:
+  name: notification-service-sa
+
+vault:
+  role: "pizzashop-prom"
+  secretPath: "kv/pizzashop/prom/notification"
+
+# Миграции для prod
+migrations:
+  enabled: true
+  type: "up"
+  image:
+    tag: ""
+  vault:
+    role: "pizzashop-prom"
+    secretPath: "kv/pizzashop/prom/migrations"
+  databaseName: "notification_prom_db"
+  dbHost: "nginx-egress.egress-gateway.svc.cluster.local"
+  dbPort: "9001"
+
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "200m"
+  limits:
+    memory: "512Mi"
+    cpu: "400m"
+
+configMap:
+  LOG_LEVEL: "warn"
+  RABBITMQ_HOST: "rabbitmq.pizzashop-prom.svc.cluster.local"
+  RABBITMQ_PORT: "5672"

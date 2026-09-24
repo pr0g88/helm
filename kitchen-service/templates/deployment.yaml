@@ -1,0 +1,3 @@
+# Реальный манифест — в common-library/templates/_deployment.tpl.
+# Настройки — в values.yaml этого чарта (image, resources, probes, vault.secrets и т.д.).
+{{ include "common.deployment" . }}

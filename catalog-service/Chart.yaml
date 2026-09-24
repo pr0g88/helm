@@ -1,0 +1,21 @@
+apiVersion: v2
+name: catalog-service
+description: Helm chart for Catalog Service
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+maintainers:
+  - name: Sergei G.
+    email: pr0g88
+
+dependencies:
+  - name: migrations-chart
+    version: "0.1.0"
+    repository: "file://../migrations-chart"
+    condition: migrations.enabled
+    alias: migrations
+  # common-library — общие шаблоны (Deployment/Service/ServiceAccount/ConfigMap/HPA[/Ingress]).
+  # См. ../common-library/templates/_*.tpl
+  - name: common-library
+    version: "0.1.0"
+    repository: "file://../common-library"

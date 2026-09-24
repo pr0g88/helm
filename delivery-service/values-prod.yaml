@@ -1,0 +1,40 @@
+image:
+  tag: ""  # ← Пустой, переопределяется через helmfile
+
+serviceAccount:
+  name: delivery-service-sa
+
+vault:
+  role: "pizzashop-prom"
+  secretPath: "kv/pizzashop/prom/delivery"
+
+# Миграции для prod окружения
+migrations:
+  enabled: true
+  type: "up"
+  image:
+    tag: ""
+  vault:
+    role: "pizzashop-prom"
+    secretPath: "kv/pizzashop/prom/migrations"
+  databaseName: "delivery_prom_db"
+  dbHost: "nginx-egress.egress-gateway.svc.cluster.local"
+  dbPort: "9001"
+
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "200m"
+  limits:
+    memory: "512Mi"
+    cpu: "400m"
+
+configMap:
+  DB_HOST: "postgres-prod"
+  DB_PORT: "5432"
+  RABBITMQ_HOST: "rabbitmq.pizzashop-prom.svc.cluster.local"
+  RABBITMQ_PORT: "5672"
+  SERVER_HOST: "0.0.0.0"
+  SERVER_PORT: "8087"
+  ORDER_SERVICE_URL: "http://order-service:8083"
+  LOG_LEVEL: "warn"

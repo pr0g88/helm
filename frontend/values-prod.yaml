@@ -1,0 +1,21 @@
+image:
+  tag: ""
+
+replicaCount: 2
+
+serviceAccount:
+  name: frontend-sa
+
+ingress:
+  host: "frontend-prod.internal"
+
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "100m"
+  limits:
+    memory: "128Mi"
+    cpu: "200m"
+
+configMap:
+  API_GATEWAY_URL: "http://api-gateway:8089"

@@ -1,0 +1,40 @@
+image:
+  tag: ""
+
+serviceAccount:
+  name: payment-service-sa
+
+vault:
+  role: "pizzashop-prom"
+  secretPath: "kv/pizzashop/prom/payment"
+
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "400m"
+  limits:
+    memory: "1Gi"
+    cpu: "1000m"
+
+# Миграции для prom
+migrations:
+  enabled: true
+  type: "up"
+  image:
+    tag: ""
+  vault:
+    role: "pizzashop-prom"
+    secretPath: "kv/pizzashop/prom/migrations"
+  databaseName: "payment_prom_db"
+  dbHost: "nginx-egress.egress-gateway.svc.cluster.local"
+  dbPort: "9001"
+
+configMap:
+  LOG_LEVEL_APP: "WARN"
+  LOG_LEVEL_ROOT: "WARN"
+  DB_HOST: "nginx-egress.egress-gateway.svc.cluster.local"
+  DB_PORT: "9001"
+  DB_NAME: "payment_prom_db"
+  RABBITMQ_HOST: "rabbitmq.pizzashop-prom.svc.cluster.local"
+  RABBITMQ_PORT: "5672"
+  JPA_DDL_AUTO: "validate"

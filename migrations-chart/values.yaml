@@ -1,0 +1,27 @@
+enabled: true
+type: "up"
+image:
+  registry: ""
+  repository: "kitchen-service-migrations"
+  tag: ""
+  pullPolicy: IfNotPresent
+backoffLimit: 5
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "50m"
+  limits:
+    memory: "128Mi"
+    cpu: "100m"
+
+vault:
+  enabled: true
+  role: "pizzashop-dev"
+  secretPath: "kv/pizzashop/dev/migrations"
+
+serviceAccount:
+  name: ""
+
+databaseName: ""
+dbHost: "postgres"
+dbPort: "5432"

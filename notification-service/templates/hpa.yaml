@@ -1,0 +1,4 @@
+# Реальный манифест — в common-library/templates/_hpa.tpl.
+# Включён только у kitchen-service (values.yaml: hpa.enabled) — у остальных
+# выключен намеренно, чтобы не расходовать лишние ресурсы кластера.
+{{ include "common.hpa" . }}

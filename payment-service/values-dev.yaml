@@ -1,0 +1,30 @@
+image:
+  tag: ""
+
+serviceAccount:
+  name: payment-service-sa
+
+vault:
+  role: "pizzashop-dev"
+  secretPath: "kv/pizzashop/dev/payment"
+
+# Миграции для dev
+migrations:
+  enabled: true
+  type: "up"
+  image:
+    tag: ""
+  vault:
+    role: "pizzashop-dev"
+    secretPath: "kv/pizzashop/dev/migrations"
+  databaseName: "payment_db"
+  dbHost: "nginx-egress.egress-gateway.svc.cluster.local"
+  dbPort: "9001"
+
+configMap:
+  LOG_LEVEL_APP: "DEBUG"
+  DB_HOST: "nginx-egress.egress-gateway.svc.cluster.local"
+  DB_PORT: "9001"
+  DB_NAME: "payment_db"
+  RABBITMQ_HOST: "rabbitmq.pizzashop-dev.svc.cluster.local"
+  RABBITMQ_PORT: "5672"

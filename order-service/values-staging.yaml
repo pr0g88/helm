@@ -1,0 +1,32 @@
+image:
+  tag: ""
+
+serviceAccount:
+  name: order-service-sa
+
+vault:
+  role: "pizzashop-staging"
+  secretPath: "kv/pizzashop/staging/order"
+
+# Миграции для staging
+migrations:
+  enabled: true
+  type: "up"
+  image:
+    tag: ""
+  vault:
+    role: "pizzashop-staging"
+    secretPath: "kv/pizzashop/staging/migrations"
+  databaseName: "order_staging_db"
+  dbHost: "nginx-egress.egress-gateway.svc.cluster.local"
+  dbPort: "9001"
+
+configMap:
+  LOG_LEVEL_APP: "INFO"
+  DB_HOST: "nginx-egress.egress-gateway.svc.cluster.local"
+  DB_PORT: "9001"
+  DB_NAME: "order_staging_db"
+  RABBITMQ_HOST: "rabbitmq.pizzashop-staging.svc.cluster.local"
+  RABBITMQ_PORT: "5672"
+  PAYMENT_SERVICE_URL: "http://payment-service:8084"
+  CATALOG_SERVICE_URL: "http://catalog-service:8082"

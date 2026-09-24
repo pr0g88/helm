@@ -1,0 +1,3 @@
+# Реальный манифест — в common-library/templates/_ingress.tpl.
+# Хост/путь/аннотации — в values.yaml: ingress.*.
+{{ include "common.ingress" . }}

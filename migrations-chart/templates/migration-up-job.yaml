@@ -1,0 +1,4 @@
+# Запускается как pre-install/pre-upgrade хук (см. _migration-job.tpl).
+{{- if .Values.enabled }}
+{{- include "migrations-chart.migration-job" (dict "type" "up" "root" .) }}
+{{- end }}

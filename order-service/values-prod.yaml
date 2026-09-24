@@ -1,0 +1,42 @@
+image:
+  tag: ""
+
+serviceAccount:
+  name: order-service-sa
+
+vault:
+  role: "pizzashop-prom"
+  secretPath: "kv/pizzashop/prom/order"
+
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "400m"
+  limits:
+    memory: "1Gi"
+    cpu: "1000m"
+
+# Миграции для prom
+migrations:
+  enabled: true
+  type: "up"
+  image:
+    tag: ""
+  vault:
+    role: "pizzashop-prom"
+    secretPath: "kv/pizzashop/prom/migrations"
+  databaseName: "order_prom_db"
+  dbHost: "nginx-egress.egress-gateway.svc.cluster.local"
+  dbPort: "9001"
+
+configMap:
+  LOG_LEVEL_APP: "WARN"
+  LOG_LEVEL_ROOT: "WARN"
+  DB_HOST: "nginx-egress.egress-gateway.svc.cluster.local"
+  DB_PORT: "9001"
+  DB_NAME: "order_prom_db"
+  RABBITMQ_HOST: "rabbitmq.pizzashop-prom.svc.cluster.local"
+  RABBITMQ_PORT: "5672"
+  PAYMENT_SERVICE_URL: "http://payment-service:8084"
+  CATALOG_SERVICE_URL: "http://catalog-service:8082"
+  JPA_DDL_AUTO: "validate"

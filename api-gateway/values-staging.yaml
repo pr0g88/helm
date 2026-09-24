@@ -1,0 +1,25 @@
+image:
+  tag: ""
+
+serviceAccount:
+  name: api-gateway-sa
+
+vault:
+  role: "pizzashop-staging"
+  secretPath: "kv/pizzashop/staging/api-gateway"
+
+ingress:
+  host: "api-gateway-staging.internal"
+
+configMap:
+  SERVER_PORT: "8089"
+  LOG_LEVEL: "debug"
+  AUTH_SERVICE_URL: "http://auth-service:8080"
+  USER_SERVICE_URL: "http://user-service:8081"
+  CATALOG_SERVICE_URL: "http://catalog-service:8082"
+  ORDER_SERVICE_URL: "http://order-service:8083"
+  PAYMENT_SERVICE_URL: "http://payment-service:8084"
+  INVENTORY_SERVICE_URL: "http://inventory-service:8085"
+  KITCHEN_SERVICE_URL: "http://kitchen-service:8086"
+  DELIVERY_SERVICE_URL: "http://delivery-service:8087"
+  NOTIFICATION_SERVICE_URL: "http://notification-service:8088"

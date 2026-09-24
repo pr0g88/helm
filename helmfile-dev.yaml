@@ -1,0 +1,143 @@
+# Helmfile для окружения dev (namespace pizzashop-dev).
+# Пути к чартам — относительные (./<service>): helmfile запускается из папки helm/.
+# registry, tag образа и migration.downEnabled подставляются пайплайном (cicd/.gitlab-ci.yml).
+environments:
+  dev:
+    values:
+      - image:
+          tag: ""
+          registry: ""
+      - migration:
+          downEnabled: "false"
+---
+releases:
+  - name: kitchen-service
+    namespace: pizzashop-dev
+    chart: ./kitchen-service
+    values:
+      - ./kitchen-service/values-dev.yaml
+      - image:
+          tag: {{ .Environment.Values.image.tag | quote }}
+          registry: {{ .Environment.Values.image.registry | quote }}
+      - migrations:
+          image:
+            tag: {{ .Environment.Values.image.tag | quote }}
+            registry: {{ .Environment.Values.image.registry | quote }}
+
+  - name: catalog-service
+    namespace: pizzashop-dev
+    chart: ./catalog-service
+    values:
+      - ./catalog-service/values-dev.yaml
+      - image:
+          tag: {{ .Environment.Values.image.tag | quote }}
+          registry: {{ .Environment.Values.image.registry | quote }}
+      - migrations:
+          image:
+            tag: {{ .Environment.Values.image.tag | quote }}
+            registry: {{ .Environment.Values.image.registry | quote }}
+
+  - name: inventory-service
+    namespace: pizzashop-dev
+    chart: ./inventory-service
+    values:
+      - ./inventory-service/values-dev.yaml
+      - image:
+          tag: {{ .Environment.Values.image.tag | quote }}
+          registry: {{ .Environment.Values.image.registry | quote }}
+      - migrations:
+          image:
+            tag: {{ .Environment.Values.image.tag | quote }}
+            registry: {{ .Environment.Values.image.registry | quote }}
+
+  - name: order-service
+    namespace: pizzashop-dev
+    chart: ./order-service
+    values:
+      - ./order-service/values-dev.yaml
+      - image:
+          tag: {{ .Environment.Values.image.tag | quote }}
+          registry: {{ .Environment.Values.image.registry | quote }}
+      - migrations:
+          image:
+            tag: {{ .Environment.Values.image.tag | quote }}
+            registry: {{ .Environment.Values.image.registry | quote }}
+
+  - name: payment-service
+    namespace: pizzashop-dev
+    chart: ./payment-service
+    values:
+      - ./payment-service/values-dev.yaml
+      - image:
+          tag: {{ .Environment.Values.image.tag | quote }}
+          registry: {{ .Environment.Values.image.registry | quote }}
+      - migrations:
+          image:
+            tag: {{ .Environment.Values.image.tag | quote }}
+            registry: {{ .Environment.Values.image.registry | quote }}
+
+  - name: notification-service
+    namespace: pizzashop-dev
+    chart: ./notification-service
+    values:
+      - ./notification-service/values-dev.yaml
+      - image:
+          tag: {{ .Environment.Values.image.tag | quote }}
+          registry: {{ .Environment.Values.image.registry | quote }}
+      - migrations:
+          image:
+            tag: {{ .Environment.Values.image.tag | quote }}
+            registry: {{ .Environment.Values.image.registry | quote }}
+
+  - name: auth-service
+    namespace: pizzashop-dev
+    chart: ./auth-service
+    values:
+      - ./auth-service/values-dev.yaml
+      - image:
+          tag: {{ .Environment.Values.image.tag | quote }}
+          registry: {{ .Environment.Values.image.registry | quote }}
+      - migrations:
+          image:
+            tag: {{ .Environment.Values.image.tag | quote }}
+            registry: {{ .Environment.Values.image.registry | quote }}
+
+  - name: user-service
+    namespace: pizzashop-dev
+    chart: ./user-service
+    values:
+      - ./user-service/values-dev.yaml
+      - image:
+          tag: {{ .Environment.Values.image.tag | quote }}
+          registry: {{ .Environment.Values.image.registry | quote }}
+
+  - name: delivery-service
+    namespace: pizzashop-dev
+    chart: ./delivery-service
+    values:
+      - ./delivery-service/values-dev.yaml
+      - image:
+          tag: {{ .Environment.Values.image.tag | quote }}
+          registry: {{ .Environment.Values.image.registry | quote }}
+      - migrations:
+          image:
+            tag: {{ .Environment.Values.image.tag | quote }}
+            registry: {{ .Environment.Values.image.registry | quote }}
+
+  - name: api-gateway
+    namespace: pizzashop-dev
+    chart: ./api-gateway
+    values:
+      - ./api-gateway/values-dev.yaml
+      - image:
+          tag: {{ .Environment.Values.image.tag | quote }}
+          registry: {{ .Environment.Values.image.registry | quote }}
+
+  - name: frontend
+    namespace: pizzashop-dev
+    chart: ./frontend
+    values:
+      - ./frontend/values-dev.yaml
+      - image:
+          tag: {{ .Environment.Values.image.tag | quote }}
+          registry: {{ .Environment.Values.image.registry | quote }}

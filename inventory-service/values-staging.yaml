@@ -1,0 +1,30 @@
+image:
+  tag: ""
+
+serviceAccount:
+  name: inventory-service-sa
+
+vault:
+  role: "pizzashop-staging"
+  secretPath: "kv/pizzashop/staging/inventory"
+
+# Миграции для staging
+migrations:
+  enabled: true
+  type: "up"
+  image:
+    tag: ""
+  vault:
+    role: "pizzashop-staging"
+    secretPath: "kv/pizzashop/staging/migrations"
+  databaseName: "inventory_staging_db"
+  dbHost: "nginx-egress.egress-gateway.svc.cluster.local"
+  dbPort: "9001"
+
+configMap:
+  LOG_LEVEL: "info"
+  DB_HOST: "nginx-egress.egress-gateway.svc.cluster.local"
+  DB_PORT: "9001"
+  DB_NAME: "inventory_staging_db"
+  RABBITMQ_HOST: "rabbitmq.pizzashop-staging.svc.cluster.local"
+  RABBITMQ_PORT: "5672"

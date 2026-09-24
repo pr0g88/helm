@@ -1,0 +1,120 @@
+# Helmfile для "прома" (namespace pizzashop-prom).
+# На прод реально не деплоимся — это заглушка для портфолио (чтобы по всем трём
+# окружениям была единая структура релизов). Пути к чартам — ./helm/<service>,
+# в отличие от dev/staging (./<service>): подразумевается запуск из корня репозитория,
+# а не из папки helm/.
+environments:
+  prom:
+    values:
+      - image:
+          tag: ""
+          registry: ""
+      - migration:
+          downEnabled: "false"
+
+releases:
+  - name: kitchen-service
+    namespace: pizzashop-prom
+    chart: ./helm/kitchen-service
+    values:
+      - ./helm/kitchen-service/values-prod.yaml
+      - image.tag: {{ .Environment.Values.image.tag }}
+      - image.registry: {{ .Environment.Values.image.registry }}
+      - migrations.image.tag: {{ .Environment.Values.image.tag }}
+      - migrations.image.registry: {{ .Environment.Values.image.registry }}
+
+  - name: catalog-service
+    namespace: pizzashop-prom
+    chart: ./helm/catalog-service
+    values:
+      - ./helm/catalog-service/values-prod.yaml
+      - image.tag: {{ .Environment.Values.image.tag }}
+      - image.registry: {{ .Environment.Values.image.registry }}
+      - migrations.image.tag: {{ .Environment.Values.image.tag }}
+      - migrations.image.registry: {{ .Environment.Values.image.registry }}
+
+  - name: order-service
+    namespace: pizzashop-prom
+    chart: ./helm/order-service
+    values:
+      - ./helm/order-service/values-prod.yaml
+      - image.tag: {{ .Environment.Values.image.tag }}
+      - image.registry: {{ .Environment.Values.image.registry }}
+      - migrations.image.tag: {{ .Environment.Values.image.tag }}
+      - migrations.image.registry: {{ .Environment.Values.image.registry }}
+
+  - name: payment-service
+    namespace: pizzashop-prom
+    chart: ./helm/payment-service
+    values:
+      - ./helm/payment-service/values-prod.yaml
+      - image.tag: {{ .Environment.Values.image.tag }}
+      - image.registry: {{ .Environment.Values.image.registry }}
+      - migrations.image.tag: {{ .Environment.Values.image.tag }}
+      - migrations.image.registry: {{ .Environment.Values.image.registry }}
+
+  - name: inventory-service
+    namespace: pizzashop-prom
+    chart: ./helm/inventory-service
+    values:
+      - ./helm/inventory-service/values-prod.yaml
+      - image.tag: {{ .Environment.Values.image.tag }}
+      - image.registry: {{ .Environment.Values.image.registry }}
+      - migrations.image.tag: {{ .Environment.Values.image.tag }}
+      - migrations.image.registry: {{ .Environment.Values.image.registry }}
+
+  - name: delivery-service
+    namespace: pizzashop-prom
+    chart: ./helm/delivery-service
+    values:
+      - ./helm/delivery-service/values-prod.yaml
+      - image.tag: {{ .Environment.Values.image.tag }}
+      - image.registry: {{ .Environment.Values.image.registry }}
+      - migrations.image.tag: {{ .Environment.Values.image.tag }}
+      - migrations.image.registry: {{ .Environment.Values.image.registry }}
+
+  - name: notification-service
+    namespace: pizzashop-prom
+    chart: ./helm/notification-service
+    values:
+      - ./helm/notification-service/values-prod.yaml
+      - image.tag: {{ .Environment.Values.image.tag }}
+      - image.registry: {{ .Environment.Values.image.registry }}
+      - migrations.image.tag: {{ .Environment.Values.image.tag }}
+      - migrations.image.registry: {{ .Environment.Values.image.registry }}
+
+  - name: user-service
+    namespace: pizzashop-prom
+    chart: ./helm/user-service
+    values:
+      - ./helm/user-service/values-prod.yaml
+      - image.tag: {{ .Environment.Values.image.tag }}
+      - image.registry: {{ .Environment.Values.image.registry }}
+      - migrations.image.tag: {{ .Environment.Values.image.tag }}
+      - migrations.image.registry: {{ .Environment.Values.image.registry }}
+
+  - name: auth-service
+    namespace: pizzashop-prom
+    chart: ./helm/auth-service
+    values:
+      - ./helm/auth-service/values-prod.yaml
+      - image.tag: {{ .Environment.Values.image.tag }}
+      - image.registry: {{ .Environment.Values.image.registry }}
+      - migrations.image.tag: {{ .Environment.Values.image.tag }}
+      - migrations.image.registry: {{ .Environment.Values.image.registry }}
+
+  - name: frontend
+    namespace: pizzashop-prom
+    chart: ./helm/frontend
+    values:
+      - ./helm/frontend/values-prod.yaml
+      - image.tag: {{ .Environment.Values.image.tag }}
+      - image.registry: {{ .Environment.Values.image.registry }}
+
+  - name: api-gateway
+    namespace: pizzashop-prom
+    chart: ./helm/api-gateway
+    values:
+      - ./helm/api-gateway/values-prod.yaml
+      - image.tag: {{ .Environment.Values.image.tag }}
+      - image.registry: {{ .Environment.Values.image.registry }}

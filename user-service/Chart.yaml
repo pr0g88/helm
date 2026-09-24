@@ -1,0 +1,16 @@
+apiVersion: v2
+name: user-service
+description: Helm chart for User Service
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+maintainers:
+  - name: Sergei G.
+    email: pr0g88
+
+dependencies:
+  # common-library — общие шаблоны (Deployment/Service/ServiceAccount/ConfigMap/HPA[/Ingress]).
+  # См. ../common-library/templates/_*.tpl
+  - name: common-library
+    version: "0.1.0"
+    repository: "file://../common-library"

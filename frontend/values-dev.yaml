@@ -1,0 +1,11 @@
+image:
+  tag: ""
+
+serviceAccount:
+  name: frontend-sa
+
+ingress:
+  host: "frontend-dev.internal"
+
+configMap:
+  API_GATEWAY_URL: "http://api-gateway:8089"

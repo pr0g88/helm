@@ -1,0 +1,25 @@
+image:
+  tag: ""
+
+replicaCount: 3
+
+serviceAccount:
+  name: user-service-sa
+
+vault:
+  role: "pizzashop-prom"
+  secretPath: "kv/pizzashop/prom"
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "200m"
+  limits:
+    memory: "256Mi"
+    cpu: "400m"
+
+configMap:
+  SERVER_HOST: "0.0.0.0"
+  SERVER_PORT: "8081"
+  RUST_LOG: "warn"
+  AUTH_SERVICE_URL: "http://auth-service:8080"

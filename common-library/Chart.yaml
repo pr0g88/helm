@@ -1,0 +1,13 @@
+# Library chart: сам по себе не деплоится и не создаёт релиз/ресурсы —
+# подключается как dependency в Chart.yaml каждого сервисного чарта и
+# даёт общие шаблоны через {{ include "common.<xxx>" . }}.
+# Что и какие values.yaml-ключи ожидает — см. комментарий в начале
+# каждого templates/_*.tpl файла.
+apiVersion: v2
+name: common-library
+description: Shared library chart for PizzaShop microservice charts (Deployment/Service/ServiceAccount/ConfigMap/HPA + naming helpers)
+type: library
+version: 0.1.0
+maintainers:
+  - name: Sergei G.
+    email: pr0g88

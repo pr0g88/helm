@@ -1,0 +1,15 @@
+image:
+  tag: ""
+
+serviceAccount:
+  name: user-service-sa
+
+vault:
+  role: "pizzashop-staging"
+  secretPath: "kv/pizzashop/staging/user"
+
+configMap:
+  SERVER_HOST: "0.0.0.0"
+  SERVER_PORT: "8081"
+  RUST_LOG: "info"
+  AUTH_SERVICE_URL: "http://auth-service:8080"

@@ -1,0 +1,72 @@
+replicaCount: 1
+
+image:
+  registry: ""
+  repository: user-service
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets:
+  - name: zot-registry-secret
+
+serviceAccount:
+  name: user-service-sa
+
+service:
+  type: ClusterIP
+  port: 8081
+  targetPort: 8081
+
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "100m"
+  limits:
+    memory: "128Mi"
+    cpu: "200m"
+
+probes:
+  liveness:
+    path: /health
+    port: http
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  readiness:
+    path: /ready
+    port: http
+    initialDelaySeconds: 10
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
+
+# HPA выключен намеренно — ограниченные ресурсы кластера (см. helm/README.md).
+# Включён только у kitchen-service, где нагрузка неравномерная (пики заказов).
+hpa:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+# Vault Agent Injector положит секреты в файлы /vault/secrets/<name> пода
+# (см. common-library/templates/_deployment.tpl). Каждый элемент secrets —
+# отдельный файл с перечисленными keys.
+vault:
+  enabled: true
+  role: "pizzashop-dev"
+  secretPath: "kv/pizzashop/dev/user"
+  secrets:
+    - name: db
+      keys:
+        - DATABASE_URL
+    - name: jwt
+      keys:
+        - JWT_SECRET
+
+configMap:
+  SERVER_HOST: "0.0.0.0"
+  SERVER_PORT: "8081"
+  RUST_LOG: "info"
+  AUTH_SERVICE_URL: "http://auth-service:8080"

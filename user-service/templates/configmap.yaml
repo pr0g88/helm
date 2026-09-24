@@ -1,0 +1,3 @@
+# Реальный манифест — в common-library/templates/_configmap.tpl.
+# Содержимое — в values.yaml: configMap.*.
+{{ include "common.configmap" . }}

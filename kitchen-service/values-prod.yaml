@@ -1,0 +1,32 @@
+image:
+  tag: ""
+
+serviceAccount:
+  name: kitchen-service-sa
+
+vault:
+  role: "pizzashop-prom"
+  secretPath: "kv/pizzashop/prom/kitchen"
+
+  # Миграции
+migrations:
+  enabled: true
+  type: "up"
+  image:
+    tag: ""
+  vault:
+    role: "pizzashop-prom"
+    secretPath: "kv/pizzashop/prom/migrations"  # Добавлен префикс kv/
+  databaseName: "kitchen_db"
+  dbHost: "nginx-egress.egress-gateway.svc.cluster.local"
+  dbPort: "9001"
+
+configMap:
+  LOG_LEVEL: "debug"
+  DB_HOST: "nginx-egress.egress-gateway.svc.cluster.local"
+  DB_PORT: "9001"
+  DB_NAME: "kitchen_prom_db"
+  INVENTORY_SERVICE_URL: "http://inventory-service:8085"
+  ORDER_SERVICE_URL: "http://order-service:8083"
+  RABBITMQ_HOST: "rabbitmq.pizzashop-dev.svc.cluster.local"
+  RABBITMQ_PORT: "5672"

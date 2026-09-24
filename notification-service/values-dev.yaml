@@ -1,0 +1,27 @@
+image:
+  tag: ""
+
+serviceAccount:
+  name: notification-service-sa
+
+vault:
+  role: "pizzashop-dev"
+  secretPath: "kv/pizzashop/dev/notification"
+
+# Миграции для dev
+migrations:
+  enabled: true
+  type: "up"
+  image:
+    tag: ""
+  vault:
+    role: "pizzashop-dev"
+    secretPath: "kv/pizzashop/dev/migrations"
+  databaseName: "notification_db"
+  dbHost: "nginx-egress.egress-gateway.svc.cluster.local"
+  dbPort: "9001"
+
+configMap:
+  LOG_LEVEL: "debug"
+  RABBITMQ_HOST: "rabbitmq.pizzashop-dev.svc.cluster.local"
+  RABBITMQ_PORT: "5672"

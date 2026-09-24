@@ -1,0 +1,30 @@
+image:
+  tag: ""
+
+serviceAccount:
+  name: inventory-service-sa
+
+vault:
+  role: "pizzashop-dev"
+  secretPath: "kv/pizzashop/dev/inventory"
+
+# Миграции для dev
+migrations:
+  enabled: true
+  type: "up"
+  image:
+    tag: ""
+  vault:
+    role: "pizzashop-dev"
+    secretPath: "kv/pizzashop/dev/migrations"
+  databaseName: "inventory_db"
+  dbHost: "nginx-egress.egress-gateway.svc.cluster.local"
+  dbPort: "9001"
+
+configMap:
+  LOG_LEVEL: "debug"
+  DB_HOST: "nginx-egress.egress-gateway.svc.cluster.local"
+  DB_PORT: "9001"
+  DB_NAME: "inventory_db"
+  RABBITMQ_HOST: "rabbitmq.pizzashop-dev.svc.cluster.local"
+  RABBITMQ_PORT: "5672"

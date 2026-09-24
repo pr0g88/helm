@@ -1,0 +1,26 @@
+image:
+  tag: ""
+
+serviceAccount:
+  name: auth-service-sa
+
+vault:
+  role: "pizzashop-staging"
+  secretPath: "kv/pizzashop/staging/auth"
+
+migrations:
+  enabled: true
+  type: "up"
+  image:
+    tag: ""
+  vault:
+    role: "pizzashop-staging"
+    secretPath: "kv/pizzashop/staging/migrations"
+  databaseName: "auth_staging_db"
+  dbHost: "nginx-egress.egress-gateway.svc.cluster.local"
+  dbPort: "9001"
+
+configMap:
+  SERVER_HOST: "0.0.0.0"
+  SERVER_PORT: "8080"
+  RUST_LOG: "info"

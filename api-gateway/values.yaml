@@ -1,0 +1,95 @@
+replicaCount: 1
+
+image:
+  registry: ""
+  repository: api-gateway
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets:
+  - name: zot-registry-secret
+
+serviceAccount:
+  name: api-gateway-sa
+
+service:
+  type: ClusterIP
+  port: 8089
+  targetPort: 8089
+
+# Переопределение entrypoint — нужен только для варианта B (Vault -> env-file).
+# Пример:
+#   command: ["/bin/sh", "-c"]
+#   args: ["set -a; . /vault/secrets/jwt.env; set +a; exec /usr/local/bin/api-gateway"]
+command: []
+args: []
+
+# Доп. env (например, valueFrom secretKeyRef для варианта C)
+extraEnv: []
+
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "100m"
+  limits:
+    memory: "128Mi"
+    cpu: "200m"
+
+probes:
+  liveness:
+    path: /health
+    port: http
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  readiness:
+    # у gateway единственный хелзчек — /health
+    path: /health
+    port: http
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
+
+# HPA выключен намеренно — ограниченные ресурсы кластера (см. helm/README.md).
+# Включён только у kitchen-service, где нагрузка неравномерная (пики заказов).
+hpa:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+# Vault Agent Injector положит секреты в файлы /vault/secrets/<name> пода
+# (см. common-library/templates/_deployment.tpl). Каждый элемент secrets —
+# отдельный файл с перечисленными keys.
+vault:
+  enabled: true
+  role: "pizzashop-dev"
+  secretPath: "kv/pizzashop/dev/api-gateway"
+  secrets:
+    - name: jwt
+      keys:
+        - JWT_SECRET
+
+ingress:
+  enabled: true
+  className: nginx
+  name: api-gateway-swagger
+  path: /
+  pathType: Prefix
+  annotations: {}
+
+configMap:
+  SERVER_PORT: "8089"
+  LOG_LEVEL: "info"
+  AUTH_SERVICE_URL: "http://auth-service:8080"
+  USER_SERVICE_URL: "http://user-service:8081"
+  CATALOG_SERVICE_URL: "http://catalog-service:8082"
+  ORDER_SERVICE_URL: "http://order-service:8083"
+  PAYMENT_SERVICE_URL: "http://payment-service:8084"
+  INVENTORY_SERVICE_URL: "http://inventory-service:8085"
+  KITCHEN_SERVICE_URL: "http://kitchen-service:8086"
+  DELIVERY_SERVICE_URL: "http://delivery-service:8087"
+  NOTIFICATION_SERVICE_URL: "http://notification-service:8088"
