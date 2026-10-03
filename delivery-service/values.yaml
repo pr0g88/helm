@@ -58,10 +58,16 @@ vault:
   role: "pizzashop-dev"
   secretPath: "kv/pizzashop/dev/delivery"
   secrets:
+    # Один файл = один секрет: app/config.py читает /vault/secrets/db, /jwt, /system
+    # (строка 0). Раньше все три ключа лежали в файле db, и JWT_SECRET был пустым -> 401.
     - name: db
       keys:
         - DATABASE_URL
+    - name: jwt
+      keys:
         - JWT_SECRET
+    - name: system
+      keys:
         - SYSTEM_TOKEN
     - name: rabbitmq
       keys:

@@ -16,6 +16,9 @@ common.deployment — Deployment для любого сервиса PizzaShop (b
   vault.secrets                 (список {name, keys[]}, см. ниже)
   configMap.*                   (сам ConfigMap собирает common.configmap;
                                   сюда попадает только через envFrom по имени)
+  extraVolumes / extraVolumeMounts  (списки, опционально — общий escape hatch
+                                  для любого чарта, который сам внешних
+                                  monki ещё не описан явно здесь)
 
 --- vault.secrets ---
 Каждый элемент списка = один файл, который Vault Agent Injector положит в
@@ -34,6 +37,17 @@ printf "{{- with secret %q -}}" ... и printf "{{ .Data.data.%s }}" . ,
 разметка" от "это чужой текст, просто похожий на неё" — он видит {{ }}
 везде в файле). printf здесь — единственный надёжный способ вывести текст
 "{{ ... }}", не дав Helm попытаться исполнить его как свой template action.
+
+--- frontend: S3-том со статикой ---
+Когда .Chart.Name == "frontend", шаблон САМ добавляет volume + volumeMount
+на PVC "s3-frontend-static-pvc" в /usr/share/nginx/html/assets — ничего
+прописывать в values.yaml фронтенда для этого не нужно. Имя PVC одинаково
+в dev и staging (в dev — ручной статический PV, в staging — динамически
+отпровижененный тот же StorageClass csi-s3), поэтому единое условие по
+имени чарта работает в обоих окружениях без дополнительных параметров.
+Любой другой чарт, которому понадобится свой произвольный volume — не
+трогает этот блок, а просто заполняет generic extraVolumes/extraVolumeMounts
+ниже, тем же паттерном, что уже есть у command/args/extraEnv.
 */}}
 {{- define "common.deployment" -}}
 apiVersion: apps/v1
@@ -95,6 +109,16 @@ spec:
         env:
           {{- toYaml . | nindent 10 }}
         {{- end }}
+        {{- if or (eq .Chart.Name "frontend") .Values.extraVolumeMounts }}
+        volumeMounts:
+        {{- if eq .Chart.Name "frontend" }}
+          - name: frontend-static-assets
+            mountPath: /usr/share/nginx/html/assets
+        {{- end }}
+        {{- with .Values.extraVolumeMounts }}
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- end }}
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
         livenessProbe:
@@ -116,6 +140,17 @@ spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if or (eq .Chart.Name "frontend") .Values.extraVolumes }}
+      volumes:
+      {{- if eq .Chart.Name "frontend" }}
+        - name: frontend-static-assets
+          persistentVolumeClaim:
+            claimName: s3-frontend-static-pvc
+      {{- end }}
+      {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- end }}
       restartPolicy: Always
 {{- end }}

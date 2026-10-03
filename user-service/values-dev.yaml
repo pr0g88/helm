@@ -13,3 +13,5 @@ configMap:
   SERVER_PORT: "8081"
   RUST_LOG: "debug"
   AUTH_SERVICE_URL: "http://auth-service:8080"
+  # источник истории заказов для GET /api/users/orders
+  ORDER_SERVICE_URL: "http://order-service:8083"

@@ -23,7 +23,8 @@ resources:
     cpu: "100m"
   limits:
     memory: "128Mi"
-    cpu: "200m"
+    # bcrypt (cost 12) на /login и /register упирался в 200m: вход занимал 3.5–6 с
+    cpu: "500m"
 
 probes:
   liveness:

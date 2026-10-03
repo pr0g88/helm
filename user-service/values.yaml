@@ -23,7 +23,8 @@ resources:
     cpu: "100m"
   limits:
     memory: "128Mi"
-    cpu: "200m"
+    # bcrypt (cost 12) в change-password упирался в лимит 200m: ответ ~несколько секунд
+    cpu: "500m"
 
 probes:
   liveness:
@@ -70,3 +71,5 @@ configMap:
   SERVER_PORT: "8081"
   RUST_LOG: "info"
   AUTH_SERVICE_URL: "http://auth-service:8080"
+  # источник истории заказов для GET /api/users/orders
+  ORDER_SERVICE_URL: "http://order-service:8083"
